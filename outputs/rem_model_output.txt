@@ -1,0 +1,172 @@
+Relational Event Model (tie oriented) 
+
+Call:
+~inertia(scaling = "std") + reciprocity(scaling = "std") + isp(scaling = "std") +     osp(scaling = "std") + itp(scaling = "std") + otp(scaling = "std") +     indegreeSender(scaling = "std") + outdegreeReceiver(scaling = "std") +     indegreeReceiver(scaling = "std") + outdegreeSender(scaling = "std") +     totaldegreeSender(scaling = "std") + totaldegreeReceiver(scaling = "std") +     recencyReceiveReceiver() + recencyReceiveSender() + recencySendReceiver() +     recencySendSender() + psABAB() + psABAY() + psABBA() + psABBY() +     psABXA() + psABXB() + psABXY() + send("age_group") + receive("age_group") +     send("gender") + receive("gender") + inertia(scaling = "std"):reciprocity(scaling = "std") +     isp(scaling = "std"):osp(scaling = "std") + itp(scaling = "std"):otp(scaling = "std")
+
+
+Coefficients (MLE with interval likelihood):
+
+                         Estimate   Std. Err    z value Pr(>|z|)    Pr(=0)
+baseline               -7.2557143  1.0227855 -7.0940726   0.0000 2.312e-10
+inertia                -0.0103998  0.0430658 -0.2414852   0.8092    0.9501
+reciprocity             0.0525671  0.0422448  1.2443466   0.2134    0.9004
+isp                    -0.0793295  0.1570059 -0.5052642   0.6134    0.9452
+osp                    -0.0529497  0.2187893 -0.2420123   0.8088    0.9501
+itp                     0.1307143  0.1653148  0.7906995   0.4291    0.9348
+otp                     0.0588454  0.1799294  0.3270471   0.7436    0.9489
+indegreeSender         -0.0824705  0.5038650 -0.1636758   0.8700    0.9508
+outdegreeReceiver      -0.3247242  0.1590100 -2.0421623   0.0411    0.7089
+indegreeReceiver        0.3244988  0.4150881  0.7817589   0.4344    0.9352
+outdegreeSender         0.1175354  0.2176324  0.5400639   0.5892    0.9442
+totaldegreeSender       0.2808603  0.6676323  0.4206811   0.6740    0.9472
+totaldegreeReceiver     0.2598977  0.5322186  0.4883289   0.6253    0.9456
+recencyReceiveReceiver -0.0046932  0.6534590 -0.0071820   0.9943    0.9514
+recencyReceiveSender    3.8242255  1.3909491  2.7493640   0.0060    0.3091
+recencySendReceiver     7.3468970  1.4006780  5.2452432   0.0000 2.079e-05
+recencySendSender       1.1703762  0.8585318  1.3632299   0.1728    0.8856
+psABAB                 -2.0356976  1.2184265 -1.6707594   0.0948    0.8291
+psABAY                 -3.3165501  1.1606715 -2.8574407   0.0043    0.2484
+psABBA                 -0.8926708  1.3514817 -0.6605127   0.5089    0.9403
+psABBY                 -3.2051166  1.2125586 -2.6432674   0.0082    0.3733
+psABXA                 -3.7240236  1.2134628 -3.0689227   0.0021    0.1501
+psABXB                 -2.5470132  1.1203782 -2.2733512   0.0230    0.5966
+psABXY                 -3.0497758  1.0263161 -2.9715756   0.0030    0.1916
+send_age_group          0.0409886  0.0869173  0.4715817   0.6372    0.9460
+receive_age_group       0.1030928  0.0906448  1.1373272   0.2554    0.9112
+send_gender             0.2911948  0.1640786  1.7747271   0.0759    0.8023
+receive_gender          0.1190539  0.1701169  0.6998356   0.4840    0.9388
+inertia:reciprocity    -0.0045320  0.0023090 -1.9627331   0.0497    0.7406
+isp:osp                -0.0025299  0.0318909 -0.0793304   0.9368    0.9513
+itp:otp                 0.0089781  0.0317546  0.2827330   0.7774    0.9496
+Null deviance: 6066.987 on 384 degrees of freedom
+Residual deviance: 2437.8 on 353 degrees of freedom
+Chi-square: 3629.188 on 31 degrees of freedom, asymptotic p-value 0 
+AIC: 2499.8 AICC: 2505.436 BIC: 2622.27
+$formula
+~inertia(scaling = "std") + reciprocity(scaling = "std") + isp(scaling = "std") + 
+    osp(scaling = "std") + itp(scaling = "std") + otp(scaling = "std") + 
+    indegreeSender(scaling = "std") + outdegreeReceiver(scaling = "std") + 
+    indegreeReceiver(scaling = "std") + outdegreeSender(scaling = "std") + 
+    totaldegreeSender(scaling = "std") + totaldegreeReceiver(scaling = "std") + 
+    recencyReceiveReceiver() + recencyReceiveSender() + recencySendReceiver() + 
+    recencySendSender() + psABAB() + psABAY() + psABBA() + psABBY() + 
+    psABXA() + psABXB() + psABXY() + send("age_group") + receive("age_group") + 
+    send("gender") + receive("gender") + inertia(scaling = "std"):reciprocity(scaling = "std") + 
+    isp(scaling = "std"):osp(scaling = "std") + itp(scaling = "std"):otp(scaling = "std")
+
+$model
+[1] "tie"
+
+$ordinal
+[1] FALSE
+
+$method
+[1] "MLE"
+
+$approach
+[1] "Frequentist"
+
+$residual.deviance
+[1] 2437.8
+
+$null.deviance
+[1] 6066.987
+
+$model.deviance
+[1] 3629.188
+
+$df.residual
+[1] 353
+
+$df.null
+[1] 384
+
+$df.model
+[1] 31
+
+$AIC
+[1] 2499.8
+
+$AICC
+[1] 2505.436
+
+$BIC
+[1] 2622.27
+
+$WAIC
+NULL
+
+$epsilon
+NULL
+
+$chiP
+[1] 0
+
+$coefsTab
+                           Estimate    Std. Err      z value     Pr(>|z|)
+baseline               -7.255714288 1.022785451 -7.094072647 1.302292e-12
+inertia                -0.010399767 0.043065850 -0.241485247 8.091790e-01
+reciprocity             0.052567124 0.042244759  1.244346634 2.133720e-01
+isp                    -0.079329480 0.157005939 -0.505264195 6.133733e-01
+osp                    -0.052949715 0.218789337 -0.242012319 8.087706e-01
+itp                     0.130714297 0.165314751  0.790699533 4.291193e-01
+otp                     0.058845383 0.179929388  0.327047089 7.436323e-01
+indegreeSender         -0.082470484 0.503864991 -0.163675757 8.699864e-01
+outdegreeReceiver      -0.324724203 0.159009985 -2.042162333 4.113543e-02
+indegreeReceiver        0.324498810 0.415088083  0.781758915 4.343563e-01
+outdegreeSender         0.117535419 0.217632443  0.540063868 5.891530e-01
+totaldegreeSender       0.280860284 0.667632306  0.420681088 6.739880e-01
+totaldegreeReceiver     0.259897728 0.532218646  0.488328866 6.253169e-01
+recencyReceiveReceiver -0.004693150 0.653459037 -0.007182011 9.942696e-01
+recencyReceiveSender    3.824225463 1.390949117  2.749364025 5.971103e-03
+recencySendReceiver     7.346897005 1.400678045  5.245243209 1.560763e-07
+recencySendSender       1.170376229 0.858531800  1.363229911 1.728101e-01
+psABAB                 -2.035697601 1.218426536 -1.670759411 9.476921e-02
+psABAY                 -3.316550062 1.160671543 -2.857440663 4.270725e-03
+psABBA                 -0.892670836 1.351481706 -0.660512704 5.089249e-01
+psABBY                 -3.205116562 1.212558580 -2.643267397 8.211016e-03
+psABXA                 -3.724023589 1.213462834 -3.068922661 2.148322e-03
+psABXB                 -2.547013225 1.120378234 -2.273351220 2.300502e-02
+psABXY                 -3.049775846 1.026316104 -2.971575554 2.962760e-03
+send_age_group          0.040988589 0.086917254  0.471581726 6.372254e-01
+receive_age_group       0.103092758 0.090644769  1.137327160 2.554015e-01
+send_gender             0.291194832 0.164078648  1.774727150 7.594295e-02
+receive_gender          0.119053881 0.170116919  0.699835631 4.840300e-01
+inertia:reciprocity    -0.004532024 0.002309037 -1.962733118 4.967719e-02
+isp:osp                -0.002529922 0.031890945 -0.079330428 9.367698e-01
+itp:otp                 0.008978081 0.031754627  0.282732990 7.773815e-01
+                             Pr(=0)
+baseline               2.312291e-10
+inertia                9.500819e-01
+reciprocity            9.003502e-01
+isp                    9.451984e-01
+osp                    9.500758e-01
+itp                    9.347906e-01
+otp                    9.489156e-01
+indegreeSender         9.508241e-01
+outdegreeReceiver      7.089124e-01
+indegreeReceiver       9.352178e-01
+outdegreeSender        9.442486e-01
+totaldegreeSender      9.471918e-01
+totaldegreeReceiver    9.456326e-01
+recencyReceiveReceiver 9.514455e-01
+recencyReceiveSender   3.091321e-01
+recencySendReceiver    2.079106e-05
+recencySendSender      8.855553e-01
+psABAB                 8.291483e-01
+psABAY                 2.484003e-01
+psABBA                 9.403177e-01
+psABBY                 3.732943e-01
+psABXA                 1.500994e-01
+psABXB                 5.965856e-01
+psABXY                 1.915749e-01
+send_age_group         9.460443e-01
+receive_age_group      9.112153e-01
+send_gender            8.022621e-01
+receive_gender         9.387989e-01
+inertia:reciprocity    7.406137e-01
+isp:osp                9.513011e-01
+itp:otp                9.495666e-01
+
+attr(,"class")
+[1] "summary.remstimate"
