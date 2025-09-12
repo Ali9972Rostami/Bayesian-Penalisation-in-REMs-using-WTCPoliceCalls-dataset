@@ -1,4 +1,4 @@
-\# Bayesian Penalisation and variable selection in REMs using WTC Police Calls Dataset Tutorial
+\### Bayesian Penalisation and variable selection in REMs using WTC Police Calls Dataset Tutorial
 
 
 
@@ -12,7 +12,7 @@ The goal is to provide a fully reproducible workflow that allows anyone to repli
 
 \## 📂 Repository Structure
 
-WTCPoliceCalls-Tutorial/
+Bayesian Penalisation and variable selection in REMs using WTC Police Calls Dataset-Tutorial/
 
 ├── data/ # Input datasets (UUsummerschool.rdata)
 
