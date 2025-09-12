@@ -49,16 +49,7 @@ Bayesian Penalisation and variable selection in REMs using WTC Police Calls Data
 Install the required packages (if not already installed):
 
 
-
-```r
-
 install.packages(c("dplyr", "ggplot2", "tidyr", "remstats", "remstimate", "remify", "brms", "bayesplot"))
-
-
-
-
-
-
 
 
 
