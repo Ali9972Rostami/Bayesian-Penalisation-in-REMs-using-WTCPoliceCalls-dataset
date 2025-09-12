@@ -145,6 +145,10 @@ GitHub repository: \[https://github.com/Ali9972Rostami/Bayesian-Penalisation-in-
 
 
 
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).  
+Feel free to use, share, and adapt with attribution.
 
 
 
