@@ -1,0 +1,44 @@
+ Family: poisson 
+  Links: mu = log 
+Formula: y ~ inertia + reciprocity + isp + osp + itp + otp + indegreeSender + outdegreeReceiver + indegreeReceiver + outdegreeSender + totaldegreeSender + totaldegreeReceiver + recencyReceiveReceiver + recencyReceiveSender + recencySendReceiver + recencySendSender + psABAB + psABAY + psABBA + psABBY + psABXA + psABXB + psABXY + send_age_group + receive_age_group + send_gender + receive_gender + inertia:reciprocity + isp:osp + itp:otp + offset(logDelta) 
+   Data: poisson_train (Number of observations: 380928) 
+  Draws: 4 chains, each with iter = 8000; warmup = 2000; thin = 1;
+         total post-warmup draws = 24000
+
+Regression Coefficients:
+                       Estimate Est.Error  l-95% CI u-95% CI    Rhat Bulk_ESS Tail_ESS
+Intercept              -9.63105   0.42566 -10.33790 -8.55537 1.02882      102     4123
+inertia                 0.01156   0.02540  -0.03652  0.06954 1.01429     3368    17061
+reciprocity             0.02297   0.02942  -0.02525  0.08168 1.08481       31      237
+isp                    -0.00250   0.03700  -0.08773  0.06888 1.02713      104    15365
+osp                     0.02870   0.05391  -0.06052  0.15962 1.07374    10843    14396
+itp                     0.02961   0.04414  -0.03242  0.12582 1.09863       26      110
+otp                    -0.00874   0.03639  -0.08508  0.06572 1.04958       51    13412
+indegreeSender          0.02474   0.09564  -0.16927  0.23273 1.03025       95    12044
+outdegreeReceiver      -0.09175   0.10959  -0.36697  0.04872 1.01012     1134    13498
+indegreeReceiver        0.26778   0.16921  -0.03425  0.55236 1.03725       75     8328
+outdegreeSender         0.19632   0.13260  -0.02264  0.44144 1.04728     5107     6289
+totaldegreeSender       0.09776   0.14607  -0.08841  0.44188 1.12388     7669    10281
+totaldegreeReceiver     0.11495   0.20651  -0.15608  0.62038 1.02874      101     8989
+recencyReceiveReceiver  0.12550   0.34472  -0.18093  1.26090 1.06863       38     1266
+recencyReceiveSender    3.40619   1.19246   0.27546  5.66337 1.03548       81     1152
+recencySendReceiver     6.31846   1.49151   3.54761  9.52706 1.01486      409     4901
+recencySendSender       0.36240   0.59566  -0.15743  1.86922 1.06364       41      952
+psABAB                  1.04022   0.70205  -0.01139  2.19072 1.08756       30      926
+psABAY                 -0.02676   0.17051  -0.45725  0.25424 1.03798     8962     9723
+psABBA                  2.62210   0.77327   0.99588  4.11948 1.01330      934     1977
+psABBY                 -0.04472   0.22397  -0.67696  0.31031 1.01425     2226     1163
+psABXA                 -0.51752   0.56234  -1.70740  0.11376 1.03207      115     6386
+psABXB                  0.24589   0.33766  -0.12136  1.04441 1.08942     4299    11201
+psABXY                 -0.16856   0.31154  -1.10615  0.13555 1.01888      224     4863
+send_age_group          0.01174   0.04686  -0.07846  0.12645 1.04203     8937    16398
+receive_age_group       0.02590   0.05941  -0.06424  0.17939 1.06028       48      312
+send_gender             0.06295   0.09763  -0.06857  0.31856 1.03525     9144    13693
+receive_gender          0.00249   0.06858  -0.14747  0.16164 1.15199    18905    17161
+inertia:reciprocity    -0.00378   0.00171  -0.00706 -0.00056 1.05958       45      722
+isp:osp                -0.00328   0.01361  -0.03842  0.01944 1.01101     3444    14073
+itp:otp                 0.00809   0.01552  -0.01906  0.04394 1.03360       80     8663
+
+Draws were sampled using sample(hmc). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).

@@ -1,0 +1,50 @@
+
+
+Call:
+glm(formula = glm_formula, family = poisson(link = "log"), data = poisson_train)
+
+Coefficients:
+                        Estimate Std. Error z value Pr(>|z|)    
+(Intercept)            -7.255714   1.022785  -7.094 1.30e-12 ***
+inertia                -0.010400   0.043066  -0.241  0.80918    
+reciprocity             0.052567   0.042245   1.244  0.21337    
+isp                    -0.079329   0.157004  -0.505  0.61337    
+osp                    -0.052950   0.218786  -0.242  0.80877    
+itp                     0.130714   0.165312   0.791  0.42911    
+otp                     0.058845   0.179927   0.327  0.74363    
+indegreeSender         -0.082470   0.503861  -0.164  0.86999    
+outdegreeReceiver      -0.324724   0.159010  -2.042  0.04114 *  
+indegreeReceiver        0.324499   0.415087   0.782  0.43435    
+outdegreeSender         0.117535   0.217632   0.540  0.58915    
+totaldegreeSender       0.280860   0.667628   0.421  0.67399    
+totaldegreeReceiver     0.259898   0.532217   0.488  0.62532    
+recencyReceiveReceiver -0.004693   0.653457  -0.007  0.99427    
+recencyReceiveSender    3.824225   1.390926   2.749  0.00597 ** 
+recencySendReceiver     7.346897   1.400646   5.245 1.56e-07 ***
+recencySendSender       1.170376   0.858528   1.363  0.17281    
+psABAB                 -2.035698   1.218418  -1.671  0.09477 .  
+psABAY                 -3.316550   1.160667  -2.857  0.00427 ** 
+psABBA                 -0.892671   1.351466  -0.661  0.50892    
+psABBY                 -3.205117   1.212550  -2.643  0.00821 ** 
+psABXA                 -3.724024   1.213452  -3.069  0.00215 ** 
+psABXB                 -2.547013   1.120373  -2.273  0.02300 *  
+psABXY                 -3.049776   1.026312  -2.972  0.00296 ** 
+send_age_group          0.040989   0.086916   0.472  0.63722    
+receive_age_group       0.103093   0.090643   1.137  0.25539    
+send_gender             0.291195   0.164076   1.775  0.07594 .  
+receive_gender          0.119054   0.170114   0.700  0.48402    
+inertia:reciprocity    -0.004532   0.002309  -1.963  0.04968 *  
+isp:osp                -0.002530   0.031891  -0.079  0.93677    
+itp:otp                 0.008978   0.031755   0.283  0.77738    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 5299.0  on 380927  degrees of freedom
+Residual deviance: 1669.8  on 380897  degrees of freedom
+AIC: 2499.8
+
+Number of Fisher Scoring iterations: 11
+
+

@@ -1,0 +1,70 @@
+
+brm_fit <- brm(
+  formula = y ~  inertia + reciprocity + isp + osp + itp + otp + indegreeSender + outdegreeReceiver + indegreeReceiver +
+    outdegreeSender + totaldegreeSender + totaldegreeReceiver + recencyReceiveReceiver + recencyReceiveSender +
+    recencySendReceiver + recencySendSender + psABAB + psABAY + psABBA + psABBY + psABXA + psABXB +
+    psABXY + send_age_group + receive_age_group + send_gender + receive_gender + inertia:reciprocity +
+    isp:osp + itp:otp + offset(logDelta),
+  data = poisson_train,
+  family = poisson(link = "log"),
+  prior_strong <- set_prior(horseshoe(
+    df         = 1,
+    scale_global = 0.01,   # small ⇒ strong global shrinkage
+    df_global  = 1,
+    scale_slab = 0.1,
+    df_slab    = 4,
+    par_ratio  = 0.05,
+    autoscale  = TRUE
+  ), class = "b"),
+  chains = 4,
+  iter = 8000,
+  warmup = 2000,
+  cores = 4,       # parallel processing
+  seed = 123,
+  backend = "cmdstan"
+)
+
+
+
+
+
+
+#AIC_brm
+[1] 1129.285
+#AIC_glm
+[1] 431.5805
+#AIC_rem
+[1] 1288.271
+
+
+
+
+
+#BIC_brm
+[1] 1365.646
+#BIC_glm
+[1] 511.3965
+#BIC_rem
+[1] 1368.087
+
+
+#brm_loglik
+[1] -533.6424
+#glm_loglik
+[1] -184.7902
+#rem_loglik
+[1] -613.1354
+
+
+
+
+
+
+
+
+
+
+
+
+
+

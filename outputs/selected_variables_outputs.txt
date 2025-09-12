@@ -1,0 +1,25 @@
+
+$CI95_selected
+[1] "b_Intercept"            "b_recencyReceiveSender" "b_recencySendReceiver" 
+[4] "b_psABBA"               "b_inertia:reciprocity" 
+
+$CI90_selected
+[1] "b_Intercept"            "b_recencyReceiveSender" "b_recencySendReceiver" 
+[4] "b_psABBA"               "b_inertia:reciprocity" 
+
+$CI50_selected
+ [1] "b_Intercept"            "b_reciprocity"          "b_outdegreeReceiver"   
+ [4] "b_indegreeReceiver"     "b_outdegreeSender"      "b_totaldegreeSender"   
+ [7] "b_recencyReceiveSender" "b_recencySendReceiver"  "b_psABAB"              
+[10] "b_psABBA"               "b_psABXA"               "b_psABXB"              
+[13] "b_send_gender"          "b_inertia:reciprocity" 
+
+$CI30_selected
+ [1] "b_Intercept"            "b_inertia"              "b_reciprocity"         
+ [4] "b_osp"                  "b_itp"                  "b_outdegreeReceiver"   
+ [7] "b_indegreeReceiver"     "b_outdegreeSender"      "b_totaldegreeSender"   
+[10] "b_recencyReceiveSender" "b_recencySendReceiver"  "b_recencySendSender"   
+[13] "b_psABAB"               "b_psABBA"               "b_psABXA"              
+[16] "b_psABXB"               "b_psABXY"               "b_send_gender"         
+[19] "b_inertia:reciprocity"  "b_itp:otp"             
+

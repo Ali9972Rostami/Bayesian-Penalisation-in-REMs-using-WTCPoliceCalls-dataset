@@ -1,0 +1,124 @@
+
+####### Horseshoe1 (stronger one)
+
+brm_model_1 <- brm(
+  formula = y ~ inertia+ reciprocity+ isp+ osp+ itp+ otp+ indegreeSender+ outdegreeReceiver+ psABAY+ psABBA+ psABBY+ psABXA+ psABXB+ psABXY+ send_age+ receive_age+ send_gender+ receive_gender+ offset(logDelta),
+  data = poisson_data1,
+  family = poisson(link = "log"),
+  prior_strong <- set_prior(horseshoe(
+  df         = 1,
+  scale_global = 0.01,   # small ⇒ strong global shrinkage
+  df_global  = 1,
+  scale_slab = 0.1,
+  df_slab    = 4,
+  par_ratio  = 0.05,
+  autoscale  = TRUE
+  ), class = "b"),
+  chains = 4,
+  iter = 4000,
+  warmup = 1000,
+  cores = 4,       # parallel processing
+  seed = 123,
+  backend = "cmdstan"
+)
+
+
+> print(Selected_Variables)
+$CI95_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"    "b_receive_age"
+
+$CI90_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"    "b_receive_age"
+
+$CI50_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_psABBA"      "b_send_age"   
+[6] "b_receive_age"
+
+$CI30_selected
+[1] "b_Intercept"      "b_inertia"        "b_reciprocity"    "b_psABBA"        
+[5] "b_send_age"       "b_receive_age"    "b_send_gender"    "b_receive_gender"
+
+
+########################## Horseshoe2
+brm_model_2 <- brm(
+  formula = y ~ inertia+ reciprocity+ isp+ osp+ itp+ otp+ indegreeSender+ outdegreeReceiver+ psABAY+ psABBA+ psABBY+ psABXA+ psABXB+ psABXY+ send_age+ receive_age+ send_gender+ receive_gender+ offset(logDelta),
+  data = poisson_data1,
+  family = poisson(link = "log"),
+  prior_strong <- set_prior(horseshoe(
+  df         = 1,
+  scale_global = 0.1,   # medium global shrinkage
+  df_global  = 1,
+  scale_slab = 0.5,
+  df_slab    = 4,
+  par_ratio  = 0.15,
+  autoscale  = TRUE
+  ), class = "b"),
+  chains = 4,
+  iter = 4000,
+  warmup = 1000,
+  cores = 4,       # parallel processing
+  seed = 123,
+  backend = "cmdstan"
+)
+
+
+> print(Selected_Variables)
+$CI95_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"   
+
+$CI90_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"    "b_receive_age"
+
+$CI50_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"    "b_receive_age"
+
+$CI30_selected
+[1] "b_Intercept"      "b_inertia"        "b_reciprocity"    "b_psABBA"        
+[5] "b_send_age"       "b_receive_age"    "b_send_gender"    "b_receive_gender"
+
+
+################################### Horseshoe3
+
+brm_model_3 <- brm(
+  formula = y ~ inertia+ reciprocity+ isp+ osp+ itp+ otp+ indegreeSender+ outdegreeReceiver+ psABAY+ psABBA+ psABBY+ psABXA+ psABXB+ psABXY+ send_age+ receive_age+ send_gender+ receive_gender+ offset(logDelta),
+  data = poisson_data1,
+  family = poisson(link = "log"),
+  prior_strong <- set_prior(horseshoe(
+  df         = 1,
+  scale_global = 0.5,   # large ⇒ weak global shrinkage
+  df_global  = 1,
+  scale_slab = 1,
+  df_slab    = 4,
+  par_ratio  = 0.40,
+  autoscale  = TRUE
+  ), class = "b"),
+  chains = 4,
+  iter = 4000,
+  warmup = 1000,
+  cores = 4,       # parallel processing
+  seed = 123,
+  backend = "cmdstan"
+)
+
+
+> print(Selected_Variables)
+$CI95_selected
+[1] "b_Intercept"   "b_reciprocity" "b_send_age"   
+
+$CI90_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"   
+
+$CI50_selected
+[1] "b_Intercept"   "b_inertia"     "b_reciprocity" "b_send_age"    "b_receive_age"
+
+$CI30_selected
+[1] "b_Intercept"      "b_inertia"        "b_reciprocity"    "b_psABBA"        
+[5] "b_send_age"       "b_receive_age"    "b_send_gender"    "b_receive_gender"
+
+
+
+
+
+
+
+
