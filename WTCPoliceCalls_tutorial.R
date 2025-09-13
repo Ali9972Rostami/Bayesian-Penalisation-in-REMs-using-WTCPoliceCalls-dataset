@@ -85,9 +85,8 @@ poisson_df1 <- function(events, tie_stats, tie_reh, t0 = 0) {
   return(df_poisson)
 }
 
-
-load("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/data/UUsummerschool.rdata")
-
+url <- "https://raw.githubusercontent.com/Ali9972Rostami/Bayesian-Penalisation-in-REMs-using-WTCPoliceCalls-dataset/main/data/UUsummerschool.rdata"
+load(url(url))
 
 names(WTCPoliceCalls)[names(WTCPoliceCalls) == "number"] <- "time"
 names(WTCPoliceCalls)[names(WTCPoliceCalls) == "source"] <- "sender"
@@ -188,139 +187,6 @@ print(summary(rem_fit))
 sink()
 
 
-# 1. Extract coefficients
-beta_hat <- coef(rem_fit)
-
-# 2. Statistics array directly from remstats
-stats_array <- stats_test   # probably already a 3D array
-
-dim(stats_array)
-
-# 3. Flatten to 2D
-X <- matrix(
-  stats_array,
-  nrow = prod(dim(stats_array)[1:2]),
-  ncol = dim(stats_array)[3]
-)
-
-# 4. Linear predictor
-eta <- as.vector(X %*% beta_hat)
-
-# 5. Hazards
-hazard <- exp(eta)
-
-# 6. Event IDs
-event_ids <- rep(1:dim(stats_array)[1], each = dim(stats_array)[2])
-
-# 7. Probabilities
-pred_df <- data.frame(
-  event_id = event_ids,
-  hazard = hazard
-) %>%
-  group_by(event_id) %>%
-  mutate(prob = hazard / sum(hazard)) %>%
-  ungroup()
-
-head(pred_df)
-dim(pred_df)
-
-
-actual_events <- test_events %>%
-  select(sender, receiver) %>%
-  mutate(event_id = row_number())
-
-actors_df <- attr(reh_test, "dictionary")$actors
-actors <- as.character(actors_df$actorName)
-
-risk_dyads <- expand.grid(sender = actors, receiver = actors, stringsAsFactors = FALSE) %>%
-  filter(sender != receiver)
-
-length_actors <- length(actors)
-riskset_size <- dim(stats_test)[2]  # number of dyads in stats array
-
-# Number of dyads from expand.grid
-num_dyads <- nrow(risk_dyads)
-
-print(c(riskset_size = riskset_size, num_dyads = num_dyads))
-
-n_events <- dim(stats_test)[1]
-
-dyads_df <- data.frame(
-  event_id = rep(1:n_events, each = riskset_size),
-  sender = rep(risk_dyads$sender, times = n_events),
-  receiver = rep(risk_dyads$receiver, times = n_events)
-)
-
-# Your predicted data frame with hazard and prob from before
-pred_df <- pred_df %>%
-  mutate(sender = dyads_df$sender,
-         receiver = dyads_df$receiver)
-
-# Actual events from sim_data
-actual_events <- test_events %>%
-  mutate(event_id = row_number()) %>%
-  select(event_id, sender = sender, receiver = receiver)
-
-pred_df <- pred_df %>%
-  mutate(sender = as.character(sender),
-         receiver = as.character(receiver))
-
-actual_events <- actual_events %>%
-  mutate(sender = as.character(sender),
-         receiver = as.character(receiver))
-
-actual_events <- actual_events %>%
-  mutate(true_event_flag = 1L)
-
-# Add true event indicator
-pred_df <- pred_df %>%
-  left_join(actual_events %>% select(event_id, sender, receiver, true_event_flag),
-            by = c("event_id", "sender", "receiver")) %>%
-  mutate(true_event = ifelse(is.na(true_event_flag), 0L, 1L)) %>%
-  select(event_id, sender, receiver, hazard, prob, true_event)
-
-head(pred_df)
-dim(pred_df)
-sum(pred_df$true_event != 0)
-
-roc_rem <- roc(pred_df$true_event, pred_df$hazard)
-auc_rem <- auc(roc_rem)
-
-capture.output(print(paste("ROC AUC:", round(auc_rem, 3))), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/ROC_AUC_rem.txt")
-
-png("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ROC_Curve_rem.png", width = 1200, height = 800)
-roc(pred_df$true_event, pred_df$prob, plot=TRUE, legacy.axes = TRUE, percent = TRUE,
-    xlab = "False Positive Percentage", ylab = "True Positive Percentage", col = "#377eb8", lwd = 3, print.auc = TRUE)
-legend("bottomright", legend = c("rem Model"))
-dev.off()
-
-rem_loglik <- pred_df %>%
-  group_by(event_id) %>%
-  summarize(
-    # sum of hazards over risk set for event m
-    sum_hazard = sum(hazard),
-    # hazard of the actual event dyad (where true_event == 1)
-    event_hazard = hazard[true_event == 1]
-  ) %>%
-  mutate(log_contrib = log(event_hazard) - log(sum_hazard)) %>%
-  summarize(logLik = sum(log_contrib)) %>%
-  pull(logLik)
-
-capture.output(print(rem_loglik), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/rem_loglik.txt")
-
-
-n_params_rem <- length(coef(rem_fit))
-
-AIC_rem <- -2 * rem_loglik + 2 * n_params_rem
-BIC_rem <- -2 * rem_loglik + log(nrow(test_events)) * n_params_rem
-
-capture.output(print(AIC_rem), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/AIC_rem.txt")
-capture.output(print(BIC_rem), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/BIC_rem.txt")
-AIC_rem
-BIC_rem
-
-
-
 poisson_train <- poisson_df1(events = train_events, tie_stats = stats_train, tie_reh = reh_train)
 dim(poisson_train)
 
@@ -360,30 +226,6 @@ poisson_test$hazard_glm <- predict(glm_fit, newdata = poisson_test, type = "resp
 poisson_test$true_event <- poisson_test$y
 
 head(poisson_test)
-
-glm_loglik <- poisson_test %>%
-  group_by(event_id) %>%
-  summarise(
-    sum_hazard_glm = sum(hazard_glm),
-    event_hazard_glm = hazard_glm[true_event == 1]
-  ) %>%
-  mutate(log_contrib_glm = log(event_hazard_glm) - log(sum_hazard_glm)) %>%
-  summarise(glm_loglik = sum(log_contrib_glm)) %>%
-  pull(glm_loglik)
-
-capture.output(print(glm_loglik), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/glm_loglik.txt")
-
-
-
-n_params_glm <- length(coef(glm_fit))
-AIC_glm <- -2 * glm_loglik + 2 * n_params_glm
-BIC_glm <- -2 * glm_loglik + log(nrow(test_events)) * n_params_glm
-
-capture.output(print(AIC_glm), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/AIC_glm.txt")
-capture.output(print(BIC_glm), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/BIC_glm.txt")
-AIC_glm
-BIC_glm
-
 
 
 brm_fit <- brm(
@@ -432,33 +274,6 @@ if (length(dim(hazard_brm_post)) == 3) {
 poisson_test$hazard_brm <- hazard_brm
 
 head(poisson_test)
-
-
-
-brm_loglik <- poisson_test %>%
-  group_by(event_id) %>%
-  summarise(
-    sum_hazard_brm = sum(hazard_brm),
-    event_hazard_brm = hazard_brm[true_event == 1]
-  ) %>%
-  mutate(log_contrib_brm = log(event_hazard_brm) - log(sum_hazard_brm)) %>%
-  summarise(logLik_brm = sum(log_contrib_brm)) %>%
-  pull(logLik_brm)
-
-capture.output(print(brm_loglik), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/brm_loglik.txt")
-
-
-
-n_params_brm <- length(fixef(brm_fit)[, "Estimate"])  # number of fixed effects
-
-# 4. AIC and BIC formulas (comparable to MLE-based ones)
-AIC_brm <- -2 * brm_loglik + 2 * n_params_brm
-BIC_brm <- -2 * brm_loglik + log(nrow(poisson_test)) * n_params_brm
-
-capture.output(print(AIC_brm), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/AIC_brm.txt")
-capture.output(print(BIC_brm), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/BIC_brm.txt")
-AIC_brm
-BIC_brm
 
 
 preds_brm <- posterior_predict(brm_fit, newdata = poisson_test)
