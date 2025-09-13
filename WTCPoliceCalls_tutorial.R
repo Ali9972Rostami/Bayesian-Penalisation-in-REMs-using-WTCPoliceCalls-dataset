@@ -181,8 +181,7 @@ dim(stats_test)
 # Fit the relational event model
 rem_fit <- remstimate(reh = reh_train, stats = stats_train, method = "MLE", ncores = 1)
 
-# Save full REM output to PDF
-sink("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/rem_model_output.txt")
+sink("outputs/rem_model_output.txt")
 print(summary(rem_fit))
 sink()
 
@@ -204,14 +203,14 @@ glm_fit <- glm(
   data = poisson_train,
   family = poisson(link = "log"))
 
-sink("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/glm_model_output.txt")
+sink("outputs/glm_model_output.txt")
 print(summary(glm_fit))
 sink()
 
 y_preds_glm <- predict(glm_fit, newdata = poisson_test, type = "link")
 y_true_glm <- poisson_test$y
 
-png("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ROC_Curve_glm.png", width = 1200, height = 800)
+png("figures/ROC_Curve_glm.png", width = 1200, height = 800)
 roc(y_true_glm, y_preds_glm, plot=TRUE, legacy.axes = TRUE, percent = TRUE,
     xlab = "False Positive Percentage", ylab = "True Positive Percentage", col = "#377eb8", lwd = 3, print.auc = TRUE)
 legend("bottomright", legend = c("glm Model"))
@@ -253,7 +252,7 @@ brm_fit <- brm(
   backend = "cmdstan"
 )
 
-sink("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/brm_model_output.txt")
+sink("outputs/brm_model_output.txt")
 print(summary(brm_fit), digits = 5)
 sink()
 
@@ -280,7 +279,7 @@ preds_brm <- posterior_predict(brm_fit, newdata = poisson_test)
 y_prob_brm <- colMeans(preds_brm)
 
 #brm model- ROC curve
-png("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ROC_Curve_brm.png", width = 1200, height = 800)
+png("figures/ROC_Curve_brm.png", width = 1200, height = 800)
 roc(poisson_test$y, y_prob_brm, plot=TRUE, legacy.axes = TRUE, percent = TRUE,
     xlab = "False Positive Percentage", ylab = "True Positive Percentage", col = "#377eb8", lwd = 3, print.auc = TRUE)
 legend("bottomright", legend = c("brm Model"))
@@ -346,7 +345,7 @@ p1 <- ggplot(all_estimates, aes(x = term, y = estimate, color = model, shape = m
 
 
 # Save as PNG
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ggplot_rem_glm.png", plot = p1, width = 8, height = 6, dpi = 300)
+ggsave("figures/ggplot_rem_glm.png", plot = p1, width = 8, height = 6, dpi = 300)
 
 ########## ggplot for the rem, glm and brm models ###########
 
@@ -420,13 +419,13 @@ p2 <- ggplot(plot_df, aes(x = Est, y = Variable, color = Model, shape = Model, l
 
 
 # Save as PNG
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ggplot_rem_glm_brm.png", plot = p2, width = 8, height = 6, dpi = 300)
+ggsave("figures/ggplot_rem_glm_brm.png", plot = p2, width = 8, height = 6, dpi = 300)
 
 ########### Diagnostic Tests ##################
 
-capture.output(summary(brm_fit)$fixed, file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/fixed_effects_summary.txt")
+capture.output(summary(brm_fit)$fixed, file = "outputs/fixed_effects_summary.txt")
 
-capture.output(neff_ratio(brm_fit), file = "C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/neff_ratio.txt")
+capture.output(neff_ratio(brm_fit), file = "outputs/neff_ratio.txt")
 
 
 # Function to extract posterior summaries from your brm model
@@ -472,11 +471,11 @@ p <- ggplot(df_brm, aes(x = Est, y = Variable)) +
   theme(legend.position = "none")
 
 # Save as PNG
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/ggplot_brm_model.png", plot = p, width = 8, height = 6, dpi = 300)
+ggsave("figures/ggplot_brm_model.png", plot = p, width = 8, height = 6, dpi = 300)
 
 
 
-png("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/mcmc_areas_plot.png", width = 1200, height = 800)
+png("figures/mcmc_areas_plot.png", width = 1200, height = 800)
 mcmc_areas(brm_fit, pars = c("b_inertia", "b_reciprocity", "b_isp", "b_osp", "b_itp", "b_otp", 
                              "b_indegreeSender", "b_outdegreeReceiver", "b_indegreeReceiver", "b_outdegreeSender",
                              "b_totaldegreeSender", "b_totaldegreeReceiver", "b_recencyReceiveReceiver", "b_recencyReceiveSender",
@@ -487,7 +486,7 @@ mcmc_areas(brm_fit, pars = c("b_inertia", "b_reciprocity", "b_isp", "b_osp", "b_
 dev.off()
 
 
-png("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/pp_check_plot.png", width = 1200, height = 800)
+png("figures/pp_check_plot.png", width = 1200, height = 800)
 pp_check(brm_fit)
 dev.off()
 
@@ -503,7 +502,7 @@ trace_plot <- mcmc_trace(posterior1, pars = fixed_params) +
   theme_minimal() +
   theme(panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white", color = NA))
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/trace_plot.png", trace_plot, width = 12, height = 8, bg = "white")
+ggsave("figures/trace_plot.png", trace_plot, width = 12, height = 8, bg = "white")
 
 
 #Density overlay plot
@@ -511,7 +510,7 @@ dens_plot <- mcmc_dens_overlay(posterior1, pars = fixed_params) +
   theme_minimal() +
   theme(panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white", color = NA))
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/density_overlay.png", dens_plot, width = 12, height = 8, bg = "white")
+ggsave("figures/density_overlay.png", dens_plot, width = 12, height = 8, bg = "white")
 
 
 #Interval plot (similar to mcmc_areas)
@@ -519,7 +518,7 @@ area_plot <- mcmc_areas(posterior1, pars = fixed_params, prob = 0.95) +
   theme_minimal() +
   theme(panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white", color = NA))
-ggsave("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/figures/posterior_intervals.png", area_plot, width = 12, height = 8, bg = "white")
+ggsave("figures/posterior_intervals.png", area_plot, width = 12, height = 8, bg = "white")
 
 
 ########## The CI for 30%, 50%, 90% and 95% and their variable selection
@@ -548,7 +547,7 @@ combined_cis <- ci95 %>%
   inner_join(ci50, by = "variable") %>%
   inner_join(ci30, by = "variable")
 
-sink("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/CIs_outputs.txt")
+sink("outputs/CIs_outputs.txt")
 print(combined_cis, n=Inf)
 sink()
 
@@ -576,7 +575,7 @@ Selected_Variables= list(
   CI30_selected = selected_vars_30
 )
 
-sink("C:/Users/rosta006/OneDrive - Universiteit Utrecht/Documents/WTCPoliceCalls-Tutorial/outputs/Selected_Variables_outputs.txt")
+sink("outputs/Selected_Variables_outputs.txt")
 print(Selected_Variables)
 sink()
 
