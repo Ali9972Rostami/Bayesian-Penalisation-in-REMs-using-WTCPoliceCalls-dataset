@@ -1,4 +1,88 @@
 
+#################### The coding of fiure 1 in section 2 ###############################
+
+rm(list = ls())
+
+# Load required libraries
+library(ggplot2)
+library(reshape2)
+
+# Common beta grid
+beta <- seq(-3, 3, length.out = 500)
+
+# Define prior scenarios
+scenarios <- data.frame(
+  prior_sd = c(1, 0.3),
+  label = c("Standard Ridge Prior (N(0,1))",
+            "Stronger Ridge Prior (N(0,0.3²))")
+)
+
+# Initialize empty data frame to store results
+df_all <- data.frame()
+
+# Loop through scenarios to compute Prior, Likelihood, Posterior
+for (i in 1:nrow(scenarios)) {
+  prior_sd <- scenarios$prior_sd[i]
+  label <- scenarios$label[i]
+  
+  # Prior
+  prior <- dnorm(beta, mean = 0, sd = prior_sd)
+  
+  # Likelihood
+  like_mean <- 1.2
+  like_sd <- 0.5
+  likelihood <- dnorm(beta, mean = like_mean, sd = like_sd)
+  
+  # Posterior (normal-normal conjugacy)
+  prior_var <- prior_sd^2
+  like_var <- like_sd^2
+  post_var <- 1 / (1/prior_var + 1/like_var)
+  post_mean <- post_var * (0/prior_var + like_mean/like_var)
+  posterior <- dnorm(beta, mean = post_mean, sd = sqrt(post_var))
+  
+  # Combine into a data frame
+  df <- data.frame(
+    beta = beta,
+    Prior = prior,
+    Likelihood = likelihood / max(likelihood),  # scaled for visibility
+    Posterior = posterior,
+    Scenario = label
+  )
+  
+  df_all <- rbind(df_all, df)
+}
+
+# Reshape for ggplot
+df_long <- melt(df_all, id.vars = c("beta", "Scenario"))
+
+# Plot with updated Likelihood color and line type
+ggplot(df_long, aes(x = beta, y = value, color = variable, linetype = variable)) +
+  geom_line(size = 2) +  # Bold lines
+  geom_vline(xintercept = 0, linetype = "dashed", color = "blue", alpha = 0.5) +
+  geom_vline(xintercept = 1.2, linetype = "dashed", color = "red", alpha = 0.5) +
+  facet_grid(. ~ Scenario) +
+  labs(
+    x = expression(beta),
+    y = "Density",
+    color = "Distribution",
+    linetype = "Distribution"
+  ) +
+  theme(
+    panel.background = element_rect(fill = "gray90", color = NA),  # light gray panel
+    plot.background = element_rect(fill = "gray90", color = NA),   # gray plot background
+    strip.background = element_rect(fill = "gray80", color = NA),
+    strip.text = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 14, face = "bold"),
+    axis.text = element_text(size = 12),
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 12)
+  ) +
+  scale_color_manual(values = c("blue", "red", "darkgreen")) +  # Likelihood is now red
+  scale_linetype_manual(values = c("dashed", "dashed", "solid"))  # Likelihood dashed like Prior
+
+
+##################### The coding of section 3 and the relevant figures ##################################
+
 rm(list=ls())
 # Load the required packages
 library(dplyr)
@@ -286,7 +370,7 @@ legend("bottomright", legend = c("brm Model"))
 dev.off()
 
 
-########## ggplot for the rem and glm models ##############
+### ggplot for the rem and glm models ####
 
 # ---- REM estimates & CIs ----
 rem_est <- data.frame(
@@ -347,7 +431,7 @@ p1 <- ggplot(all_estimates, aes(x = term, y = estimate, color = model, shape = m
 # Save as PNG
 ggsave("figures/ggplot_rem_glm.png", plot = p1, width = 8, height = 6, dpi = 300)
 
-########## ggplot for the rem, glm and brm models ###########
+## ggplot for the rem, glm and brm models ##
 
 extract_glm_data <- function(model, model_name) {
   coefs <- coef(summary(model))
@@ -421,7 +505,7 @@ p2 <- ggplot(plot_df, aes(x = Est, y = Variable, color = Model, shape = Model, l
 # Save as PNG
 ggsave("figures/ggplot_rem_glm_brm.png", plot = p2, width = 8, height = 6, dpi = 300)
 
-########### Diagnostic Tests ##################
+## Diagnostic Tests ##
 
 capture.output(summary(brm_fit)$fixed, file = "outputs/fixed_effects_summary.txt")
 
@@ -521,7 +605,7 @@ area_plot <- mcmc_areas(posterior1, pars = fixed_params, prob = 0.95) +
 ggsave("figures/posterior_intervals.png", area_plot, width = 12, height = 8, bg = "white")
 
 
-########## The CI for 30%, 50%, 90% and 95% and their variable selection
+#### The CI for 30%, 50%, 90% and 95% and their variable selection
 # Step 1: Extract posterior draws
 draws <- as_draws_df(brm_fit)
 fixed_effects_names <- grep("^b_", colnames(draws), value = TRUE)
