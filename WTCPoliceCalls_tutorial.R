@@ -1,5 +1,5 @@
 
-#################### The coding of fiure 1 in section 2 ###############################
+#################### The coding of figure 1 in section 2 ###############################
 
 rm(list = ls())
 
